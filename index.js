@@ -20,7 +20,7 @@ async function run() {
     const servicesCollection = client.db('Assignment').collection('services');
 
     app.get('/service', async (req, res) => {
-      console.log('query', req.body)
+      
       const page = parseInt(req.query.page);
       const size = parseInt(req.query.size)
 
