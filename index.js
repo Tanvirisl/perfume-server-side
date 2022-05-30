@@ -20,7 +20,7 @@ async function run() {
     const servicesCollection = client.db('Assignment').collection('services');
 
     app.get('/service', async (req, res) => {
-      
+
       const page = parseInt(req.query.page);
       const size = parseInt(req.query.size)
 
@@ -55,22 +55,23 @@ async function run() {
     app.put('/service/:id', async (req, res) => {
       const id = req.params.id;
       const update = req.body;
+      console.log(update)
       const filter = { _id: ObjectId(id) };
       const option = { upsert: true };
       const updateService = {
-        $set: {
-          image:update.image,
-          name: update.name,
-          price: update.price,
-          quantity: update.quantity,
-          description: update.description,
-        }
+        $set: update,
       }
-      const result = await servicesCollection.updateOne(filter,updateService,option);
+      const result = await servicesCollection.updateOne(filter, updateService, option);
       res.send(result);
     })
 
-    app.post('/service',async(req, res)=>{
+
+    app.get('/getService', async(req, res) => {
+      const getService = await servicesCollection.find().toArray();
+      res.send(getService)
+    })
+
+    app.post('/service', async (req, res) => {
       const newItem = req.body;
       console.log('adding new user', newItem);
       const result = await servicesCollection.insertOne(newItem)
